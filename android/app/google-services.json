@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "713046754365",
+    "project_id": "temaribet-13057",
+    "storage_bucket": "temaribet-13057.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713046754365:android:7d064fc0b5c390b5159654",
+        "android_client_info": {
+          "package_name": "com.example.temaribet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "713046754365-ak0a7irjl4qvbe1eapfo41nrv5d1junc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.temaribet",
+            "certificate_hash": "94c72a5a7535283a23ee75c08b60a053d211e4cd"
+          }
+        },
+        {
+          "client_id": "713046754365-gova7lb6vle4io8tmeu25919hn887dbg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6JvPmxkW0MheZ5HQ9-WRIdfpaKrZeoF0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "713046754365-gova7lb6vle4io8tmeu25919hn887dbg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
