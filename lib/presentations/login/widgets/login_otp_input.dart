@@ -4,7 +4,7 @@ import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:temaribet/blocs/auth/auth_bloc.dart';
 import 'package:temaribet/blocs/auth/auth_event.dart';
 
-class OtpInput extends StatelessWidget {
+class LoginOtpInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
@@ -16,14 +16,14 @@ class OtpInput extends StatelessWidget {
             PinEntryTextField(
                 fields: 6,
                 onSubmit: (String pin) {
-                  BlocProvider.of<LoginBloc>(context)
+                  BlocProvider.of<AuthBloc>(context)
                       .add(VerifyOtpEvent(otp: pin));
                 }),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 onTap: () {
-                  BlocProvider.of<LoginBloc>(context).add(AppStartEvent());
+                  BlocProvider.of<AuthBloc>(context).add(AppStartEvent());
                 },
                 child: Container(
                   decoration: BoxDecoration(

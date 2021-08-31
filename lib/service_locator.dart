@@ -7,14 +7,14 @@ final sl = GetIt.instance;
 
 Future<void> serviceLocatorInit() async {
   /// Blocs
-  sl.registerLazySingleton(() => LoginBloc(loginRepository: sl()));
+  sl.registerLazySingleton(() => AuthBloc(loginRepository: sl()));
 
   /// Repositories
 
   /// data sources
 
-  sl.registerLazySingleton<LoginRepository>(
-      () => LoginRepository(firebaseAuth: sl()));
+  sl.registerLazySingleton<AuthRepository>(
+      () => AuthRepository(firebaseAuth: sl()));
 
   /// FirebaseAuth instance
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;

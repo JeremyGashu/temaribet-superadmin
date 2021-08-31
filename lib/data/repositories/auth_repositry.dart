@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginRepository {
+class AuthRepository {
   final FirebaseAuth _firebaseAuth;
 
-  LoginRepository({FirebaseAuth firebaseAuth})
+  AuthRepository({FirebaseAuth firebaseAuth})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
+  
 
   Future<void> sendOtp(
       String phoneNumber,
@@ -37,6 +38,7 @@ class LoginRepository {
       throw Exception(e.message);
     }
   }
+
 
   User getUser() {
     var user = _firebaseAuth.currentUser;

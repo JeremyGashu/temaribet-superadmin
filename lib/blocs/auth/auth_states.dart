@@ -1,22 +1,22 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-abstract class LoginState extends Equatable {
-  const LoginState();
+abstract class AuthState extends Equatable {
+  const AuthState();
 
   @override
   List<Object> get props => [];
 }
 
-class LoginInitial extends LoginState {}
+class LoginInitial extends AuthState {}
 
-class OtpSentState extends LoginState {}
+class OtpSentState extends AuthState {}
 
-class LoadingState extends LoginState {}
+class LoadingState extends AuthState {}
 
-class OtpVerifiedState extends LoginState {}
+class OtpVerifiedState extends AuthState {}
 
-class LoginCompleteState extends LoginState {
+class LoginCompleteState extends AuthState {
   final User _firebaseUser;
 
   LoginCompleteState(this._firebaseUser);
@@ -29,7 +29,7 @@ class LoginCompleteState extends LoginState {
   List<Object> get props => [_firebaseUser];
 }
 
-class ExceptionState extends LoginState {
+class ExceptionState extends AuthState {
   final String message;
 
   ExceptionState({this.message});
@@ -38,7 +38,7 @@ class ExceptionState extends LoginState {
   List<Object> get props => [message];
 }
 
-class OtpExceptionState extends LoginState {
+class OtpExceptionState extends AuthState {
   final String message;
 
   OtpExceptionState({this.message});

@@ -5,30 +5,27 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:temaribet/blocs/auth/auth_bloc.dart';
 import 'package:temaribet/blocs/auth/auth_event.dart';
 import 'package:temaribet/blocs/auth/auth_states.dart';
+import 'package:temaribet/core/firebase_services.dart';
 import 'package:temaribet/presentations/homepage/pages/homepage.dart';
 import 'package:temaribet/presentations/login/widgets/loading_indicator.dart';
 import 'package:temaribet/presentations/login/widgets/login_otp_input.dart';
-import 'package:temaribet/presentations/signup/signup_page.dart';
+import 'package:temaribet/service_locator.dart';
+import 'package:temaribet/utils/utils.dart';
 
-import '../../../service_locator.dart';
-
-
-class LoginPage extends StatefulWidget {
-  static const String loginPageRouterName = 'login_page_route_name';
+class SignupPage extends StatefulWidget {
+  static const String signUpPageRouteName = 'signup_page_route_name';
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignupPageState createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
   final TextEditingController controller = TextEditingController();
   String initialCountry = 'ET';
   PhoneNumber number = PhoneNumber(isoCode: 'ET');
   String inputNumber;
   bool isInputValid = false;
-
+  String selectedRole = 'student';
   AuthBloc authBloc = sl<AuthBloc>();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +47,11 @@ class _LoginPageState extends State<LoginPage> {
               ),
             );
         } else if (state is LoginCompleteState) {
+          // authBloc.add(LoggedIn(token: state.getUser().uid));
+          // SharedPreferences sharedPreferences =
+          //     await SharedPreferences.getInstance();
+          // await sharedPreferences.setInt('homePage', 0);
           Navigator.pushReplacementNamed(context, HomePage.homepageRouteName);
-          //todo => check the user role and redirect based on the user preference
         }
       },
       builder: (context, state) {
@@ -93,29 +93,36 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         _buildPhoneInputField(),
         _buildHelpText(context),
-
-        GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, SignupPage.signUpPageRouteName);
-          },
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                  'Create Account!',
-                  style: TextStyle(
-                    color: Colors.purple,
-                    decoration: TextDecoration.underline,
-                  ),
-                  textAlign: TextAlign.end,
-                ),
-            ),
-          ),
-        ),
-        SizedBox(height: 20),
+        _buildSelector(),
         _buildProccedButton(),
       ],
+    );
+  }
+
+  Widget _buildSelector() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 30),
+        child: Row(
+          children: [
+            Text('Register as '),
+            SizedBox(width: 30,),
+            DropdownButton(
+              value: selectedRole,
+              items: [
+                DropdownMenuItem(child: Text('Student'), value: 'student',),
+                DropdownMenuItem(child: Text('Parent'), value: 'parent',),
+              ],
+              onChanged: (val) {
+                authBloc.selectedRole = val;
+                setState(() {
+                  selectedRole = val;
+                });
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -181,9 +188,11 @@ class _LoginPageState extends State<LoginPage> {
       width: double.infinity,
       // padding: EdgeInsets.all(15),
       child: MaterialButton(
-        onPressed: () {
+        onPressed: () async {
           if (isInputValid) {
-            authBloc.add(SendOtpEvent(phoNo: inputNumber));
+            print('check is the user with the phone number is registered!');
+            print('phone number $inputNumber');
+            authBloc.add(SignUpUserEvent(phoneNo: inputNumber, role: selectedRole));
           }
         },
         child: Row(
@@ -238,7 +247,7 @@ class _LoginPageState extends State<LoginPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Log in with your phone!',
+            'Create Account',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 22,
@@ -251,6 +260,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-
 }
