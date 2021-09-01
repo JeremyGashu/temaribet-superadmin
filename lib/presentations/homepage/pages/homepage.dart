@@ -6,6 +6,7 @@ import 'package:temaribet/presentations/homepage/pages/parent_homepage.dart';
 import 'package:temaribet/presentations/homepage/pages/student_homepage.dart';
 import 'package:temaribet/presentations/login/pages/login_page.dart';
 import 'package:temaribet/utils/utils.dart';
+import 'package:temaribet/presentations/splash/welcome_page.dart';
 
 class HomePage extends StatelessWidget {
   static const String homepageRouteName = 'home_page_route_name';

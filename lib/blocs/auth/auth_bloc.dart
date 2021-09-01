@@ -47,7 +47,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else if (event is OtpSendEvent) {
       yield OtpSentState();
     } else if (event is LoginCompleteEvent) {
-      yield LoginCompleteState(event.firebaseUser);
+      try {
+        bool userRegistered =
+            await userExists(phoneNumber: event.firebaseUser.phoneNumber);
+            print('user phone number ${event.firebaseUser.phoneNumber}');
+        if (!userRegistered) {
+          await initUserWithPhoneAndRole(
+              phone: event.firebaseUser.phoneNumber,
+              role: selectedRole ?? 'student');
+        }
+
+        yield LoginCompleteState(event.firebaseUser);
+      } catch (e) {
+        yield ExceptionState(
+            message: 'Error on registration please try again!');
+      }
     } else if (event is LoginExceptionEvent) {
       yield ExceptionState(message: event.message);
     } else if (event is VerifyOtpEvent) {

@@ -194,6 +194,10 @@ class _SignupPageState extends State<SignupPage> {
             print('phone number $inputNumber');
             authBloc.add(SignUpUserEvent(phoneNo: inputNumber, role: selectedRole));
           }
+
+          else{
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please enter a valid phone!')));
+          }
         },
         child: Row(
           mainAxisSize: MainAxisSize.min,
