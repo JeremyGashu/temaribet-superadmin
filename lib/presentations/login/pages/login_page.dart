@@ -8,7 +8,6 @@ import 'package:temaribet/blocs/auth/auth_states.dart';
 import 'package:temaribet/presentations/homepage/pages/homepage.dart';
 import 'package:temaribet/presentations/login/widgets/loading_indicator.dart';
 import 'package:temaribet/presentations/login/widgets/login_otp_input.dart';
-import 'package:temaribet/presentations/signup/signup_page.dart';
 
 import '../../../service_locator.dart';
 
@@ -92,29 +91,12 @@ class _LoginPageState extends State<LoginPage> {
     return Column(
       children: [
         _buildPhoneInputField(),
-        _buildHelpText(context),
+        // _buildHelpText(context),
 
-        GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, SignupPage.signUpPageRouteName);
-          },
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                  'Create Account!',
-                  style: TextStyle(
-                    color: Colors.purple,
-                    decoration: TextDecoration.underline,
-                  ),
-                  textAlign: TextAlign.end,
-                ),
-            ),
-          ),
-        ),
+        SizedBox(height: 20),
         SizedBox(height: 20),
         _buildProccedButton(),
+        SizedBox(height: 20),
       ],
     );
   }
@@ -213,17 +195,14 @@ class _LoginPageState extends State<LoginPage> {
       child: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
-            text: 'By proceeding you agree to our ',
+            text: 'Admin Dashboard ',
             style: TextStyle(color: Colors.grey, fontSize: 12),
             children: <TextSpan>[
               TextSpan(
-                text: 'Terms and conditions & Privacy policy.',
+                text: 'App',
                 style: TextStyle(color: Colors.purple[900], fontSize: 12),
               ),
-              TextSpan(
-                text: ' We will send you SMS shortly. ',
-                style: TextStyle(color: Colors.grey, fontSize: 12),
-              ),
+              
             ]),
       ),
     );

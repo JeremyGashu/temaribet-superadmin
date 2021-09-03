@@ -13,19 +13,6 @@ Future<bool> userExists({String phoneNumber}) async {
   return userWithPhoneNumber.docs.length > 0;
 }
 
-Future initUserWithPhoneAndRole({String phone, String role}) async {
-  print('init user called with phone => $phone and role => $role');
-  bool registered = await userExists(phoneNumber: phone);
-  if(!registered) {
-    print('the user is not registered => registering now');
-    await _usersCollection.add({'phone': phone, 'role': role});
-  }
-  else{
-    print('the user is already initialized');
-  }
-  
-}
-
 User getUser() {
   var user = _firebaseAuth.currentUser;
   return user;
@@ -42,6 +29,8 @@ Future<Role> getUserRoleByPhoneNumber({String phone}) async {
           return Role.STUDENT;
         case 'parent':
           return Role.PARENT;
+        case 'superadmin':
+          return Role.SUPERADMIN;
         default:
           return Role.UNDEFINED;
       }

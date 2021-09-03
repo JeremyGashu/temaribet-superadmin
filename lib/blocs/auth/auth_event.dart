@@ -24,15 +24,6 @@ class LogoutEvent extends AuthEvent {}
 
 class OtpSendEvent extends AuthEvent {}
 
-class SignUpUserEvent extends AuthEvent {
-  final String phoneNo;
-  final String role;
-
-  SignUpUserEvent({this.phoneNo, this.role});
-  @override
-  List<Object> get props => [phoneNo, role];
-}
-
 class LoginCompleteEvent extends AuthEvent {
   final User firebaseUser;
   LoginCompleteEvent(this.firebaseUser);

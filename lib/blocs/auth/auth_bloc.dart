@@ -5,6 +5,7 @@ import 'package:temaribet/blocs/auth/auth_event.dart';
 import 'package:temaribet/core/firebase_services.dart';
 import 'package:temaribet/data/repositories/auth_repositry.dart';
 import 'package:bloc/bloc.dart';
+import 'package:temaribet/utils/utils.dart';
 
 import 'auth_states.dart';
 
@@ -25,42 +26,33 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is SendOtpEvent) {
       yield LoadingState();
       bool userRegistered = await userExists(phoneNumber: event.phoNo);
+      Role role = await getUserRoleByPhoneNumber(phone: event.phoNo);
       if (!userRegistered) {
         yield ExceptionState(
-            message: 'Unkown phone number. Please register if you haven\'t!');
+            message: 'Unknown Phone Number');
         return;
       }
-      streamSubscription = sendOtp(event.phoNo).listen((event) {
+      
+      else if(userRegistered && role.index == Role.SUPERADMIN.index) {
+        streamSubscription = sendOtp(event.phoNo).listen((event) {
         add(event);
       });
-    } else if (event is SignUpUserEvent) {
-      yield LoadingState();
-      bool userRegistered = await userExists(phoneNumber: event.phoneNo);
-      if (userRegistered) {
-        yield ExceptionState(message: 'Phone number already registerd, Please Log in!');
+      }
+
+      else{
+        yield ExceptionState(
+            message: 'Unknown Phone Number');
         return;
       }
-      selectedRole = event.role;
-      streamSubscription = sendOtp(event.phoneNo).listen((event) {
-        add(event);
-      });
-    } else if (event is OtpSendEvent) {
+    }else if (event is OtpSendEvent) {
       yield OtpSentState();
     } else if (event is LoginCompleteEvent) {
       try {
-        bool userRegistered =
-            await userExists(phoneNumber: event.firebaseUser.phoneNumber);
-            print('user phone number ${event.firebaseUser.phoneNumber}');
-        if (!userRegistered) {
-          await initUserWithPhoneAndRole(
-              phone: event.firebaseUser.phoneNumber,
-              role: selectedRole ?? 'student');
-        }
 
         yield LoginCompleteState(event.firebaseUser);
       } catch (e) {
         yield ExceptionState(
-            message: 'Error on registration please try again!');
+            message: 'Error on Login!');
       }
     } else if (event is LoginExceptionEvent) {
       yield ExceptionState(message: event.message);
@@ -71,7 +63,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             await loginRepository.verifyAndLogin(verId, event.otp);
         if (result.user != null) {
 
-          await initUserWithPhoneAndRole(phone: result.user.phoneNumber, role: selectedRole);
           yield LoginCompleteState(result.user);
         } else {
           yield OtpExceptionState(message: "Invalid otp!");
